@@ -1,0 +1,51 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  vars_prompt:
+   - name: myuser
+     prompt: Enter the UserName
+     private: no
+   - name: mypass
+     prompt: Enter the Password
+   - name: guest_name
+     prompt: Enter the Guest VM Name
+     private: no
+  remote_user: root
+
+  tasks:
+   - name: Create a VM
+     delegate_to: localhost
+     vsphere_guest:
+       vcenter_hostname: '192.168.0.27'
+       esxi:
+         datacenter: ha-datacenter
+         hostname: 'localhost.hitronhub.home'
+       username: '{{myuser}}'
+       password: '{{mypass}}'
+       validate_certs: no
+       guest: '{{guest_name}}'
+       state: powered_on
+       vm_extra_config:
+         vcpu.hotadd: yes
+         mem.hotadd:  yes
+         notes: This is a test VM created using Ansible
+
+       vm_disk:
+         disk1:
+           size_gb: 100
+           type: thin
+           datastore: biggy
+       vm_nic:
+         nic1:
+           type: vmxnet3
+           network: VM Network
+           network_type: standard
+       vm_hardware:
+         memory_mb: 2048
+         num_cpus: 2
+         osid: rhel6_64Guest
+         scsi: paravirtual
+         vm_cdrom:
+           type: "iso"
+           iso_path: "biggy/ISOs/CentOS-6.7-x86_64-minimal.iso"
