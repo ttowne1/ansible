@@ -1,0 +1,51 @@
+# my hosts file
+[servers]
+192.168.0.201
+192.168.0.202
+192.168.0.203
+
+# these 2 groups need a username and password, so you'll need
+# to pass in the -k and -K flags to log in and use sudo
+[ubuntu1404-password]
+server3.geekandi.net
+server4.geekandi.net
+ 
+[ubuntu1204-password]
+server1.geekandi.net
+server2.geekandi.net
+ 
+[centos7-password]
+server21.geekandi.net
+server22.geekandi.net
+ 
+# create a host group of like systems
+[linux-password:children]
+ubuntu1404-password
+ubuntu1204-password
+centos7-password
+ 
+# and set some variables for this group
+[linux-password:vars]
+ansible_ssh_user=mike
+ 
+# these 2 groups use an ssh key to log into the server and
+# do not require a password for sudo
+[ubuntu1404-sshkey]
+server13.geekandi.net
+server14.geekandi.net
+ 
+[ubuntu1204-sshkey]
+server15.geekandi.net
+server16.geekandi.net
+ 
+[redhat7-sshkey]
+server31.geekandi.net
+ 
+[linux-sshkey:children]
+ubuntu1404-sshkey
+ubuntu1204-sshkey
+redhat7-sshkey
+ 
+[linux-sshkey:vars]
+ansible_ssh_user=ansible
+ansible_ssh_private_key_file=~/.ssh/ansible.pem
