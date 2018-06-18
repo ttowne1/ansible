@@ -1,4 +1,8 @@
 # my hosts file
+[windows]
+192.168.0.34
+192.168.0.35
+
 [ubuntu-servers]
 192.168.0.201
 192.168.0.202
@@ -7,10 +11,15 @@
 [centos-vm]
 192.168.0.31
 
+[ubuntu-vm]
+192.168.0.30
+[ubuntu-vm:vars]
+ansible_ssh_user=ubuntu
+
 [servers:children]
 ubuntu-servers
 centos-vm
-
+ubuntu-vm
 # and set some variables for this group
 [centos-vm:vars]
 ansible_ssh_user=centos
