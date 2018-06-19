@@ -8,12 +8,12 @@
     # will may also pick up modern OracleLinux but OL has a lot of
     # different strings.
     - name: Check Ansible version
-      command: ansible --version
+      command: uptime
       register: ansibleVersion
 
     - name: Print version
       debug:
-        msg: "Ansible Version: {{ ansibleVersion.stdout }}"
+        msg: "Ansible Version: {{ ansible_distribution }}"
 
     - name: .rpm upgrade server
       yum: >
